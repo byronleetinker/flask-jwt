@@ -13,6 +13,22 @@ class User(object):
         self.password = password
 
 
+def init_user_table():
+    conn = sqlite3.connect('blog.db')
+    print("Opened database successfully")
+
+    conn.execute("CREATE TABLE IF NOT EXISTS user(user_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                 "first_name TEXT NOT NULL,"
+                 "last_name TEXT NOT NULL,"
+                 "username TEXT NOT NULL,"
+                 "password TEXT NOT NULL)")
+    print("user table created successfully")
+    conn.close()
+
+
+init_user_table()
+
+
 def fetch_users():
     with sqlite3.connect('blog.db') as conn:
         cursor = conn.cursor()
@@ -29,19 +45,6 @@ def fetch_users():
 users = fetch_users()
 
 
-def init_user_table():
-    conn = sqlite3.connect('blog.db')
-    print("Opened database successfully")
-
-    conn.execute("CREATE TABLE IF NOT EXISTS user(user_id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                 "first_name TEXT NOT NULL,"
-                 "last_name TEXT NOT NULL,"
-                 "username TEXT NOT NULL,"
-                 "password TEXT NOT NULL)")
-    print("user table created successfully")
-    conn.close()
-
-
 def init_post_table():
     with sqlite3.connect('blog.db') as conn:
         conn.execute("CREATE TABLE IF NOT EXISTS post (id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -51,7 +54,6 @@ def init_post_table():
     print("blog table created successfully.")
 
 
-init_user_table()
 init_post_table()
 
 username_table = {u.username: u for u in users}
